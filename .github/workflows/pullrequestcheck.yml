@@ -9,3 +9,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: ls -R
+      - run: git diff --name-only origin/main origin/${GITHUB_HEAD_REF}
