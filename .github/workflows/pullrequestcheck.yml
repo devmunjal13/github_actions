@@ -1,17 +1,26 @@
-name: Run Tests
+name: Check File Changes
 
-on: pull_request
+on:
+  pull_request:
+    paths:
+      - .env.sample
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Fetching Branch
-        run: |
-          echo "branch=$(git branch --show-current)" >> $GITHUB_ENV
-      - name: Fetching Diffrence
-        run: |
-          git fetch origin main
-          echo git diff main "${{ env.branch }}" --name-only
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Check for changes in file
+      run: |
+        CHANGED_FILES="$(git diff HEAD^1 --name-only)"
+        if echo "$CHANGED_FILES" | grep -q .env.sample; then
+          echo "File has changed"
+          exit 0
+        else
+          echo "File has not changed"
+          exit 1
+        fi
+
