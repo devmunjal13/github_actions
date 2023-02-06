@@ -1,9 +1,6 @@
 name: Check File Changes
 
-on:
-  pull_request:
-    paths:
-      - .env.sample
+on: pull_request
 
 jobs:
   build:
