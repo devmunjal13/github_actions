@@ -8,11 +8,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - run: ls -R
-      - name: print-diff
-        shell: bash
+      - name: Fetching Branch
+        run: |
+          echo "branch=$(git branch --show-current)" >> $GITHUB_ENV
+      - name: Fetching Diffrence
         run: |
           git fetch origin main
-          git diff origin/main..HEAD > mydiff
-          echo "mydiff = "
-          cat mydiff
+          echo git diff main "${{ env.branch }}" --name-only
